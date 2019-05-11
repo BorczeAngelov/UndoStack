@@ -10,6 +10,19 @@ namespace Runner
     {
         static void Main(string[] args)
         {
+            new Runner().Run();
+        }
+
+
+    }
+
+    class Runner
+    {
+        public void Run()
+        {
+            var temp = new UndoStack.UndoStackExecutor();
+
+            temp.ExecuteAndAdd(null);
         }
     }
 }

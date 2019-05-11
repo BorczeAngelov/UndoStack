@@ -1,23 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
-namespace UndoStack.Interfaces
+namespace UndoStack
 {
     public interface ITwoWayAction
     {
-        void ExecuteOrRedo();
-        void RevertOrUndo();
+        void Execute();
+        void RevertExecute();
         void MergeWithNextIfNeeded(ITwoWayAction nextTwoWayAction);
     }
 
-    public interface IUndoStackManager
+    public interface IUndoStackExecutor : INotifyPropertyChanged
     {
-        void AddAndExecute(ITwoWayAction twoWayAction);
-        void Redo();
-        void Undo();
-        void Clear();
+        void ExecuteAndAdd(ITwoWayAction twoWayAction);
+        bool Redo();
+        bool Undo();
+
+        bool CanUndo { get; }
+        bool CanRedo { get; }
+    }
+
+    internal interface IUndoStack
+    {
+        void AppendToCurrent(ITwoWayAction twoWayAction);
+        ITwoWayAction Current { get; }
+
+        bool MoveNext();
+        bool MovePrevious();
+
+        bool HasNext();
+        bool HasPrevious();
     }
 }
