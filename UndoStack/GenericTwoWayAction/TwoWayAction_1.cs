@@ -9,12 +9,12 @@ namespace UndoStack.GenericTwoWayAction
             throw new NotImplementedException();
         }
 
-        public void MergeWithNextIfNeeded(ITwoWayAction nextTwoWayAction)
+        public void RevertExecute()
         {
             throw new NotImplementedException();
         }
 
-        public void RevertExecute()
+        public bool TryToMerge(ITwoWayAction newTwoWayAction)
         {
             throw new NotImplementedException();
         }

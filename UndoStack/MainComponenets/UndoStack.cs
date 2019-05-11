@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 
@@ -6,18 +7,48 @@ namespace UndoStack
 {
     class UndoStack : IUndoStack
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         readonly List<ITwoWayAction> _twoWayActions = new List<ITwoWayAction>();
+        private ITwoWayAction _current;
 
-        public ITwoWayAction Current { get; private set; }
-
-        public void AppendToCurrent(ITwoWayAction twoWayAction)
+        public ITwoWayAction Current
         {
-            if (HasNext())
+            get => _current;
+            private set
             {
-                RemoveNextActions();
+                if (_current != value)
+                {
+                    _current = value;
+                    OnPropertyChanged(nameof(Current));
+                }
             }
-            _twoWayActions.Add(twoWayAction);
-            Current = twoWayAction;
+        }
+
+        public void AppendToCurrent(ITwoWayAction newTwoWayAction)
+        {
+            RemoveNextActionsIfNeeded();
+            TryToMergeWithCurrentOrAddToUndoStack();
+
+            #region local functions
+            void RemoveNextActionsIfNeeded()
+            {
+                if (HasNext())
+                {
+                    RemoveNextActions();
+                }
+            }
+
+            void TryToMergeWithCurrentOrAddToUndoStack()
+            {
+                bool hasMerged = Current.TryToMerge(newTwoWayAction);
+                if (hasMerged == false)
+                {
+                    _twoWayActions.Add(newTwoWayAction);
+                    Current = newTwoWayAction;
+                }
+            }
+            #endregion
         }
 
         private void RemoveNextActions()
@@ -69,6 +100,11 @@ namespace UndoStack
         {
             Debug.Assert(Current != null);
             return _twoWayActions.IndexOf(Current);
+        }
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

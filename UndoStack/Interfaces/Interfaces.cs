@@ -6,7 +6,7 @@ namespace UndoStack
     {
         void Execute();
         void RevertExecute();
-        void MergeWithNextIfNeeded(ITwoWayAction nextTwoWayAction);
+        bool TryToMerge(ITwoWayAction newTwoWayAction);
     }
 
     public interface IUndoStackExecutor : INotifyPropertyChanged
@@ -19,7 +19,7 @@ namespace UndoStack
         bool CanRedo { get; }
     }
 
-    internal interface IUndoStack
+    internal interface IUndoStack : INotifyPropertyChanged
     {
         void AppendToCurrent(ITwoWayAction twoWayAction);
         ITwoWayAction Current { get; }

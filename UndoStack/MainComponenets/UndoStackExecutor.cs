@@ -17,12 +17,26 @@ namespace UndoStack
 
         public bool CanRedo { get => _undoStack.HasNext(); }
 
+        public UndoStackExecutor()
+        {
+            _undoStack.PropertyChanged += OnNewCurrentRefreshCanProperties;
+
+            #region local Function
+            void OnNewCurrentRefreshCanProperties(object sender, PropertyChangedEventArgs e)
+            {
+                if (e.PropertyName == nameof(_undoStack.Current))
+                {
+                    OnPropertyChanged(nameof(CanUndo));
+                    OnPropertyChanged(nameof(CanRedo));
+                }
+            }
+            #endregion
+        }
 
         public void ExecuteAndAdd(ITwoWayAction twoWayAction)
         {
             twoWayAction.Execute();
             _undoStack.AppendToCurrent(twoWayAction);
-            RefreshCanProperties();
         }
 
         public bool Redo()
@@ -45,15 +59,9 @@ namespace UndoStack
             return canPreform;
         }
 
-        private void RefreshCanProperties()
-        {
-            OnPropertyChanged(nameof(CanUndo));
-            OnPropertyChanged(nameof(CanRedo));
-        }
-
         private void OnPropertyChanged(string propertyName)
         {
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
