@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 
 namespace UndoStack
 {
@@ -39,10 +38,18 @@ namespace UndoStack
                 }
             }
 
+            void RemoveNextActions()
+            {
+                var currentIndex = GetCurrentIndex();
+                int suceddingElementsCount = _twoWayActions.Count - currentIndex;
+                _twoWayActions.RemoveRange(currentIndex, suceddingElementsCount);
+            }
+
             void TryToMergeWithCurrentOrAddToUndoStack()
             {
-                bool hasMerged = Current.TryToMerge(newTwoWayAction);
-                if (hasMerged == false)
+                bool? hasMerged = Current?.TryToMerge(newTwoWayAction);
+                var hasNotMerged = hasMerged != true;
+                if (hasNotMerged)
                 {
                     _twoWayActions.Add(newTwoWayAction);
                     Current = newTwoWayAction;
@@ -51,54 +58,43 @@ namespace UndoStack
             #endregion
         }
 
-        private void RemoveNextActions()
+
+        public void MoveNext()
         {
             var currentIndex = GetCurrentIndex();
-            int suceddingElementsCount = _twoWayActions.Count - currentIndex;
-            _twoWayActions.RemoveRange(currentIndex, suceddingElementsCount);
+            int nextIndex = currentIndex + 1;
+            Debug.Assert(nextIndex < _twoWayActions.Count);
+            Current = _twoWayActions[nextIndex];
         }
 
-        public bool MoveNext()
+        public void MovePrevious()
         {
-            var result = HasNext();
-            if (result)
+            var currentIndex = GetCurrentIndex();
+            int previousIndex = currentIndex - 1;
+
+            var isPreviousBeforeFirstIndex = previousIndex == -1;
+            if (isPreviousBeforeFirstIndex)
             {
-                var currentIndex = GetCurrentIndex();
-                int nextIndex = currentIndex + 1;
-                Debug.Assert(_twoWayActions.Count > nextIndex);
-                Current = _twoWayActions[nextIndex];
+                Current = null;
             }
-            return result;
-        }
-
-        public bool MovePrevious()
-        {
-            var result = HasPrevious();
-            if (result)
+            else
             {
-                var currentIndex = GetCurrentIndex();
-                int previousIndex = currentIndex - 1;
-                Debug.Assert(_twoWayActions.Count > previousIndex && previousIndex >= 0);
                 Current = _twoWayActions[previousIndex];
             }
-            return result;
         }
 
         public bool HasNext()
         {
-            var lastElement = _twoWayActions.LastOrDefault();
-            return Current != lastElement;
+            return GetCurrentIndex() < _twoWayActions.Count - 1;
         }
 
         public bool HasPrevious()
         {
-            var firstElement = _twoWayActions.FirstOrDefault();
-            return Current != firstElement;
+            return GetCurrentIndex() >= 0;
         }
 
         private int GetCurrentIndex()
         {
-            Debug.Assert(Current != null);
             return _twoWayActions.IndexOf(Current);
         }
 

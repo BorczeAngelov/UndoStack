@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UndoStack;
+using UndoStack.GenericTwoWayAction;
 
 namespace Runner
 {
@@ -22,8 +23,25 @@ namespace Runner
         public void Run()
         {
             var undoStackExecutor = new UndoStackExecutor();
+            int counter = 0;
 
-            undoStackExecutor.ExecuteAndAdd(null);
+            undoStackExecutor.ExecuteAndAdd(
+                new TwaSameDelagateSameArgs<int>(
+                    10,
+                    argExecute=>
+                    {
+                        counter += argExecute;
+                    },
+                    argRevertExecute=>
+                    {
+                        counter -= argRevertExecute;
+                    }));
+
+            undoStackExecutor.Undo();
+
+            undoStackExecutor.Redo();
+
+
         } 
     }
 }

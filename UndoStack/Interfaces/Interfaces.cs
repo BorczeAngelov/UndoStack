@@ -12,8 +12,8 @@ namespace UndoStack
     public interface IUndoStackExecutor : INotifyPropertyChanged
     {
         void ExecuteAndAdd(ITwoWayAction twoWayAction);
-        bool Redo();
-        bool Undo();
+        void Redo();
+        void Undo();
 
         bool CanUndo { get; }
         bool CanRedo { get; }
@@ -24,8 +24,8 @@ namespace UndoStack
         void AppendToCurrent(ITwoWayAction twoWayAction);
         ITwoWayAction Current { get; }
 
-        bool MoveNext();
-        bool MovePrevious();
+        void MoveNext();
+        void MovePrevious();
 
         bool HasNext();
         bool HasPrevious();

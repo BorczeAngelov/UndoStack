@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UndoStack", "UndoStack.csproj", "{48858BF4-0080-4FA7-A805-5F3ADD1F61EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "..\Runner\Runner.csproj", "{D270D8C3-0DF1-42F3-B333-2419ED6B8777}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{48858BF4-0080-4FA7-A805-5F3ADD1F61EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48858BF4-0080-4FA7-A805-5F3ADD1F61EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48858BF4-0080-4FA7-A805-5F3ADD1F61EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D270D8C3-0DF1-42F3-B333-2419ED6B8777}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D270D8C3-0DF1-42F3-B333-2419ED6B8777}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D270D8C3-0DF1-42F3-B333-2419ED6B8777}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D270D8C3-0DF1-42F3-B333-2419ED6B8777}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

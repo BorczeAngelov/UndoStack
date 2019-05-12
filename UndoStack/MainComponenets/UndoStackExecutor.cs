@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 
 namespace UndoStack
 {
@@ -39,25 +36,35 @@ namespace UndoStack
             _undoStack.AppendToCurrent(twoWayAction);
         }
 
-        public bool Redo()
+        public void Redo()
         {
-            var canPreform = _undoStack.MoveNext();
-            if (canPreform)
+            if (CanRedo)
             {
+                MoveToNextAndExecuteRedo();
+            }
+
+            void MoveToNextAndExecuteRedo()
+            {
+                _undoStack.MoveNext();
                 _undoStack.Current.Execute();
             }
-            return canPreform;
         }
 
-        public bool Undo()
+
+        public void Undo()
         {
-            var canPreform = _undoStack.MovePrevious();
-            if (canPreform)
+            if (CanUndo)
+            {
+                UndoCurrentAndMoveToPrevious();
+            }
+
+            void UndoCurrentAndMoveToPrevious()
             {
                 _undoStack.Current.RevertExecute();
+                _undoStack.MovePrevious();
             }
-            return canPreform;
         }
+
 
         private void OnPropertyChanged(string propertyName)
         {

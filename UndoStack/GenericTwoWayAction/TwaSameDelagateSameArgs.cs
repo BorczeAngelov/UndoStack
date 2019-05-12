@@ -2,7 +2,7 @@
 
 namespace UndoStack.GenericTwoWayAction
 {
-    class TwaSameDelagateSameArgs<TArgs> : ITwoWayAction
+    public class TwaSameDelagateSameArgs<TArgs> : ITwoWayAction
     {
         private readonly TArgs _args;
         private readonly Action<TArgs> _execute;
