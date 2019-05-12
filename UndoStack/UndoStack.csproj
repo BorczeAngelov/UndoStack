@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GenericTwoWayAction\TwoWayAction_1.cs" />
+    <Compile Include="GenericTwoWayAction\TwaSameDelagateSameArgs.cs" />
     <Compile Include="Interfaces\Interfaces.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MainComponenets\UndoStack.cs" />

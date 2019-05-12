@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UndoStack;
 
 namespace Runner
 {
@@ -20,9 +21,9 @@ namespace Runner
     {
         public void Run()
         {
-            var temp = new UndoStack.UndoStackExecutor();
+            var undoStackExecutor = new UndoStackExecutor();
 
-            temp.ExecuteAndAdd(null);
-        }
+            undoStackExecutor.ExecuteAndAdd(null);
+        } 
     }
 }
